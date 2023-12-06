@@ -1,0 +1,31 @@
+{% extends 'core/base.html' %}
+
+{% block title %}مکالمه{% endblock %}
+
+{% block content %}
+<center><h1 class="mb-6 mx-0 text-4xl font-bold ">مکالمه</h1></center>
+
+<div class="grid grid-cols-3 bg-slate-50 rounded-xl">
+    <div class="col-span-1 mx-2">
+        <form method="post" action="." class="mt-6">
+            {% csrf_token %}
+
+            {{ form.as_p }}
+
+            <button class="signup py-2 px-8 xl:px-56 text-lg bg-blue-500 hover:bg-blue-700 rounded-xl text-white" type="submit">ارسال</button>
+        </form>
+    </div>
+    <div class="col-span-2 mt-5 mx-2">
+        <div class="space-y-6" style="height:400px;overflow-y:auto">
+            {% for message in conversation.messages.all %}
+                <div class="p-6 flex {% if message.created_by == request.user %}bg-blue-100{% else %}bg-gray-200{% endif %} rounded-xl">
+                    <div >
+                        <p class="mb-4">@{{ message.created_at }} | <strong>{{ message.created_by.username }}</strong></P>
+                        <p>{{ message.content }}</P>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock content %}
