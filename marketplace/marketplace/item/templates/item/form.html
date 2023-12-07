@@ -2,7 +2,7 @@
 
 {% block title %}{{ title }}{% endblock title %}
 
-{% comment %} add item page {% endcomment %}
+{% comment %} add & eidt item page {% endcomment %}
 
 {% block content %}
 <center><h1 class='mb-6 mx-0 text-4xl font-bold '>{{ title }}</h1></center>
@@ -19,7 +19,7 @@
             {% for field in form %}
                 {{field.errors}}
             {% endfor %}
-            
+                
             {{ form.non_field_errors }}
         </div>
     {% endif %}

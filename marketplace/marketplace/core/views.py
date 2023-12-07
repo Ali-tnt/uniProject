@@ -4,7 +4,7 @@ from .forms import SignupForm
  #request parameter is for reciving information about browser, ip addres, being GET or POST request, etc...
 
 def index(request):
-    items = Item.objects.filter(is_sold= False)[0:6]
+    items = Item.objects.filter(is_sold= False)[0:8]
     categories = Category.objects.all()
     # we made the /templates/core folders and django itself findes addres that we gave in render that is those
     return render(request, 'core/index.html', {

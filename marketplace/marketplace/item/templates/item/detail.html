@@ -19,7 +19,7 @@
             <div class="mt-6 p-6 bg-white rounded-xl">
                 <p>این محصول شماست.</p>
                 <a href="{% url 'item:edit' item.id %}" class="inline-block mt-6 px-6 py-3 text-lg font-semibold bg-lime-600 text-white rounded-xl">ویرایش</a>
-                <a href="{% url 'item:delete' item.id %}" class="inline-block mt-6 px-6 py-3 text-lg font-semibold bg-red-500 text-white rounded-xl" style="pointer-events: none">بندازش دور</a>
+                <a href="{% url 'item:delete' item.id %}" class="inline-block mt-6 px-6 py-3 text-lg font-semibold bg-red-500 text-white rounded-xl" onclick=confirmDelete>بندازش دور</a>
             </div>
         {% else %}
             <a href="{% url 'conversation:new' item.id %}" class="inline-block mt-6 px-6 py-3 text-lg font-semibold bg-cyan-500 text-white rounded-2xl hover:bg-cyan-700 ">تماس با فروشنده</a>
@@ -50,5 +50,14 @@
      </div>
    </div>
 
-  
+  <script>
+    function confirmDelete(itemId) {
+        return confirm('از تصمیم خود مطمئن هستید؟ محصول پاک شده امکان بازگشت ندارد.');
+      }
+      
+      $("a.delete-item").click(function() {
+        var itemId = $(this).attr('href').split('?')[1].split('=')[1]; // Extract item ID from URL
+        return confirmDelete(itemId);
+      });
+  </script>
 {% endblock %}

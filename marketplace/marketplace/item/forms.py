@@ -23,7 +23,8 @@ class NewItemForm(forms.ModelForm):
                 'value': 0
             }),
             'image': forms.FileInput(attrs={
-                'class': INPUT_CLASSES
+                'class': INPUT_CLASSES,
+                'required':'',
             }),
         }
 

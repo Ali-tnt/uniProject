@@ -4,7 +4,7 @@
  {% block content %}
 
   <div class="mt-6 px-6 py-12 bg-gray-100 rounded-xl">   
-    <a href="{% url 'core:logout' %}" class="px-2 py-2 text-sm bg-red-600 text-white rounded-lg hover:bg-stone-400">خروج از حساب کاربری</a>
+    <a href="{% url 'core:logout' %}" class="px-2 py-2 text-sm bg-red-600 text-white rounded-lg hover:bg-stone-400" onclick="return confirmLogout()">خروج از حساب کاربری</a>
     
     <h2 class="mb-12 text-2xl text-center">محصولات من</h2>
 
@@ -25,4 +25,15 @@
         {% endfor %}
      </div>
    </div>
+
+   <script>
+    function confirmLogout(itemId) {
+        return confirm('آیا قصد خروج از حساب کاربری خود را دارید؟');
+      }
+      
+      $("a.delete-item").click(function() {
+        var itemId = $(this).attr('href').split('?')[1].split('=')[1]; // Extract item ID from URL
+        return confirmLogout(itemId);
+      });
+  </script>
 {% endblock content%}
