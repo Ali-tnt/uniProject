@@ -10,7 +10,12 @@
 
     <body dir="rtl">
         <nav class="px-8 py-6 flex justify-between items-center border-b border-gray-200">
-            <a href="/" class="text-xl font-semibold" >فروشگاه اینترنتی</a>
+            <div >
+                <a href="/" class="text-xl font-semibold" >فروشگاه اینترنتی</a>
+                {% if request.user.is_authenticated %}
+                <p class="text-zinc-500">خوش آمدید {{request.user}}</P>  {% endif %}
+            </div>
+          
             <div class="">
                 <a href="{% url 'item:browse'%}" class=" text-lg font-semibold hover:text-gray-500">جستجوی محصولات</a>
                 <a href="{% url 'item:new_item'%}" class="px-6 text-lg font-semibold hover:text-gray-500">محصول جدید</a>
@@ -50,5 +55,97 @@
         </footer>
     </body>
 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        function confirmDelete(itemId) {
+            return confirm('از تصمیم خود مطمئن هستید؟ محصول پاک شده امکان بازگشت ندارد!');
+          }
+          
+          $("a.delete-item").click(function() {
+            var itemId = $(this).attr('href').split('?')[1].split('=')[1]; // Extract item ID from URL
+            return confirmDelete(itemId);
+          });
+          $("#username").keypress(function(event) {
+            var charCode = event.which;
+            if (!(charCode >= 48 && charCode <= 57) &&
+               !(charCode >= 65 && charCode <= 90) &&
+               !(charCode >= 97 && charCode <= 122)) {
+                alert("فقط حروف و اعداد انگلیسی وارد کنید");
+                return false;
+            }
+            return true;
+        });
+            function confirmLogout(itemId) {
+                return confirm('آیا قصد خروج از حساب کاربری خود را دارید؟');
+              }
+              
+              $("a.delete-item").click(function() {
+                var itemId = $(this).attr('href').split('?')[1].split('=')[1]; // Extract item ID from URL
+                return confirmLogout(itemId);
+              });
+              
+        $(".toggle-password").click(function() {
+          $(this).toggleClass("fa-eye fa-eye-slash");
+          var input = $($(this).attr("toggle"));
+          if (input.attr("type") == "password") {
+            input.attr("type", "text");
+          } else {
+            input.attr("type", "password");
+          }
+        });
+        $(".toggle-con-password").click(function() {
+            $(this).toggleClass("fa-eye fa-eye-slash");
+            var input = $($(this).attr("toggle"));
+            if (input.attr("type") == "password") {
+              input.attr("type", "text");
+            } else {
+              input.attr("type", "password");
+            }
+          });
+    
+        let signUp = document.querySelector('.signup')
+        let termCond = document.querySelector('#remember')
+        let password = document.querySelector('#password')
+        let confirmPassword = document.querySelector('#confirmPassword')
+        const passwordPattern = /^[a-zA-Z0-9]{8,15}$/;
+    
+        password.addEventListener('keyup', event => {
+            if (passwordPattern.test(password.value)) {
+                password.style.borderColor = 'green'
+            } else {
+                password.style.borderColor = 'Red'
+            }
+        })
+        password.addEventListener('focusout', event => {
+            if (passwordPattern.test(password.value)) {
+                password.style.borderColor = '#e1dede69'
+            } else {
+                password.style.borderColor = 'Red'
+            }
+        })
+    
+        confirmPassword.addEventListener(['keyup'], event => {
+            if (passwordPattern.test(password.value) && password.value === confirmPassword.value) {
+                confirmPassword.style.borderColor = 'green'
+            } else {
+                confirmPassword.style.borderColor = 'Red'
+            }
+        })
+        confirmPassword.addEventListener('focusout', event => {
+            if (passwordPattern.test(confirmPassword.value)) {
+                confirmPassword.style.borderColor = '#e1dede69'
+            } else {
+                confirmPassword.style.borderColor = 'Red'
+            }
+        })
+    
+        termCond.addEventListener('change', () => {
+            if (termCond.checked === true) {
+                signUp.disabled = false;
+            } else if (termCond.checked === false) {
+                signUp.disabled = true;
+            }
+        })
 
+      </script>
 </html>

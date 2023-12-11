@@ -3,11 +3,12 @@
 {% block title %}{{item.name}}{% endblock %}
 
 {% block content %}
-<div class="grid grid-cols-5">
+<div class="grid grid-cols-5 ">
     <div class="col-span-2 p-6 bg-gray-100 rounded-xl">
         <h1 class="mb-6 text-3xl">{{item.name}}</h1>
         <p class="text-gray-500"><strong>قیمت: </strong>{{item.price}}</p>
         <p class="text-gray-500"><strong>فروشنده: </strong>{{ item.created_by.username }}</p>
+        <p class="text-gray-500"><strong>دسته بندی: </strong>{{ item.category }}</p><br>
         {%if item.description%}
             <p class="text-gray-700">
                 <strong class="text-black-500">توضیحات:</strong><br>
@@ -19,20 +20,20 @@
             <div class="mt-6 p-6 bg-white rounded-xl">
                 <p>این محصول شماست.</p>
                 <a href="{% url 'item:edit' item.id %}" class="inline-block mt-6 px-6 py-3 text-lg font-semibold bg-lime-600 text-white rounded-xl">ویرایش</a>
-                <a href="{% url 'item:delete' item.id %}" class="inline-block mt-6 px-6 py-3 text-lg font-semibold bg-red-500 text-white rounded-xl" onclick=confirmDelete>بندازش دور</a>
+                <a href="{% url 'item:delete' item.id %}" class="inline-block mt-6 px-6 py-3 text-lg font-semibold bg-red-500 text-white rounded-xl" onclick="return confirmDelete()">بندازش دور</a>
             </div>
         {% else %}
             <a href="{% url 'conversation:new' item.id %}" class="inline-block mt-6 px-6 py-3 text-lg font-semibold bg-cyan-500 text-white rounded-2xl hover:bg-cyan-700 ">تماس با فروشنده</a>
         {% endif %}
     </div>
-    <div class="col-span-3 justify-start" style="margin-right: auto;margin-left: 0;">
-        <img style="height:100%; width:80%; aspect-ratio: 3/2;"  src="{{item.image.url}}" class="rounded-xl">
+    <div class="col-span-3 justify-start " style="margin-right: auto;margin-left: 0;margin-right: 25%; width:50%;height:330">
+        <img style="width: calc(250% + 300px );height:calc(100%+50px); aspect-ratio: 3/2;"  src="{{item.image.url}}" class="rounded-xl">
     </div>
 </div>
 <div class="mt-6 px-6 py-12 bg-gray-100 rounded-xl">        
     <h2 class="mb-12 text-2xl text-center">محصولات مرتبط</h2>
 
-    <div class="grid grid-cols-4 gap-4">
+    <div class="grid grid-cols-4 gap-24">
         {% for item in related_items %}
           <div>
             <a href ="{% url 'item:detail' item.id %}"> 
@@ -42,7 +43,8 @@
 
               <div class="p-6 bg-white rounded-b-xl">
                   <h2 class="text-2xl "> {{item.name}} <h2> 
-                  <p class="text-gray-500 "> قیمت: {{item.price}} تومان</p>               
+                  <p class="text-gray-500 "> قیمت: {{item.price}} تومان</p>       
+                          
                </div>
             </a>
           </div>
@@ -50,14 +52,4 @@
      </div>
    </div>
 
-  <script>
-    function confirmDelete(itemId) {
-        return confirm('از تصمیم خود مطمئن هستید؟ محصول پاک شده امکان بازگشت ندارد.');
-      }
-      
-      $("a.delete-item").click(function() {
-        var itemId = $(this).attr('href').split('?')[1].split('=')[1]; // Extract item ID from URL
-        return confirmDelete(itemId);
-      });
-  </script>
 {% endblock %}

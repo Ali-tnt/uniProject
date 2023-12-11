@@ -4,11 +4,13 @@ from django.db.models import Q
 from .models import Category, Item
 from .forms import NewItemForm, EditItemForm
 
+
 # for search an item
   # items
+
 def browse(request):
-    query = request.GET.get('query','')
-    category_id = request.GET.get('category', 0 )
+    query = request.POST.get('query','')
+    category_id = request.POST.get('category', 0 )
     categories = Category.objects.all()
     browse = Item.objects.filter(is_sold=False)
 
@@ -85,5 +87,13 @@ def edit_item(request, pk):
 def delete(request, pk):
     item = get_object_or_404(Item,pk=pk, created_by=request.user)
     item.delete()
+
+    return redirect('dashboard:index')
+
+@login_required
+def sold_out(request, pk):
+    item = get_object_or_404(Item, pk=pk, created_by=request.user)
+    item.is_sold = not(item.is_sold)
+    item.save()
 
     return redirect('dashboard:index')

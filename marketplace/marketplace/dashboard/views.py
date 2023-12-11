@@ -8,4 +8,5 @@ def index(request):
 
     return render(request, 'dashboard/index.html',{
         'items': items,
+        'var_class': "px-6 py-3 font-semibold text-white rounded-lg ",
     })

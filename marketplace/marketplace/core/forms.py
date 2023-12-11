@@ -1,7 +1,6 @@
 from django import forms
-from django.contrib.auth import user_logged_out
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from django.contrib.auth.models import User 
+from django.contrib.auth.models import User
 
 INPUT_CLASSES  = 'w-full py-4 px-6 rounded-lg'
 
@@ -20,12 +19,13 @@ class LoginForm(AuthenticationForm):
     }))
 
 class SignupForm(UserCreationForm):
-    class Meta: 
-        model = User 
-        fields = ('first_name','last_name', 'username', 'email', 'password1', 'password2', ) 
+    class Meta:
+        model = User
+        fields = ('first_name','last_name', 'username', 'email', 'password1', 'password2')
     username =  forms.CharField(widget=forms.TextInput(attrs={
         'placeholder': 'نام کاربری موردنظر',
-        'class': INPUT_CLASSES
+        'class': INPUT_CLASSES,
+        'ID' : 'username'
     }))
     first_name =  forms.CharField(widget=forms.TextInput(attrs={
         'placeholder': 'نام شما',
@@ -55,3 +55,4 @@ class SignupForm(UserCreationForm):
         'autocomplete': 'current-password',
         'id': 'confirmPassword',
     }))
+    
