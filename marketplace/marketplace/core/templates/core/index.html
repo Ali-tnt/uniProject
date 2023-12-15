@@ -15,8 +15,8 @@
 
               <div class="p-6 bg-white rounded-b-xl">
                   <h2 class="text-2xl "> {{item.name}} <h2> 
-                  <p class="text-gray-500 "> قیمت: {{item.price}} تومان</p>
-                    <p class="text-gray-500"><strong>> {{ item.category }}</strong></p>
+                  <p class="text-gray-500"> قیمت: <b class="currency">{{ item.price }}</b> تومان</p>
+                  <p class="text-gray-500"><strong>> {{ item.category }}</strong></p>               
                </div>
             </a>
           </div>
@@ -28,15 +28,15 @@
     <h2 class="mb-12 text-2xl text-center">دسته بندی ها</h2>
 
     <div class="grid grid-cols-4 gap-4">
-      {% for category in categories %}
-      <div>
-        <a href ="#"> 
-          <div class="p-6 bg-white rounded-b-xl rounded-t-xl">
-            <h2 class="text-2xl "> {{category.name}} <h2> 
-              <p class="text-gray-500 ">{{category.items.count}}محصول</p>               
-          </div>
-        </a>
-      </div>
+      {% for category in categories %} 
+          <form method="POST" action="{% url 'item:browse' %}" >
+            {% csrf_token %}
+              <div class="p-6 bg-white rounded-b-xl rounded-t-xl" onclick="Categorylink(this)">
+                <input type="hidden" name="category" value="{{ category.id }}">
+                <button type="submit" class="text-2xl "><h2 class="text-2xl ">{{category.name}}<h2></button>
+                <p class="text-gray-500 ">{{  category.unsold_items_count  }}محصول</p>               
+              </div>
+          </form>
       {% endfor %}
     </div>
 

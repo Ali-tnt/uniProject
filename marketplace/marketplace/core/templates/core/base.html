@@ -57,6 +57,31 @@
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
+
+       // Define a function to convert the inner text of all elements with 'currency' class
+        function convertCurrencyToPersianStyle() {
+            // Get all elements by class
+            var currencyElems = document.getElementsByClassName('currency');
+            
+            // Loop through all elements with the 'currency' class
+            for (var i = 0; i < currencyElems.length; i++) {
+            // Get the numeric value from the element, removing any commas
+            var number = parseFloat(currencyElems[i].innerText.replace(/,/g, ''));
+        
+            // Check if it's a valid number
+            if (!isNaN(number)) {
+                // Perform locale conversion with custom character replacements
+                var formatted = number.toLocaleString('en').replace(/\٬/g, ",");
+        
+                // Replace the element's text with the new formatted number
+                currencyElems[i].innerText = formatted;
+            }
+            }
+        }
+        
+        // Call the conversion function when the window finishes loading
+        window.onload = convertCurrencyToPersianStyle;
+
         function confirmDelete(itemId) {
             return confirm('از تصمیم خود مطمئن هستید؟ محصول پاک شده امکان بازگشت ندارد!');
           }
@@ -75,14 +100,16 @@
             }
             return true;
         });
-            function confirmLogout(itemId) {
-                return confirm('آیا قصد خروج از حساب کاربری خود را دارید؟');
-              }
-              
-              $("a.delete-item").click(function() {
-                var itemId = $(this).attr('href').split('?')[1].split('=')[1]; // Extract item ID from URL
-                return confirmLogout(itemId);
-              });
+
+        function confirmLogout(itemId) {
+            return confirm('آیا قصد خروج از حساب کاربری خود را دارید؟');
+            }
+            
+
+        $("a.delete-item").click(function() {
+        var itemId = $(this).attr('href').split('?')[1].split('=')[1]; // Extract item ID from URL
+        return confirmLogout(itemId);
+        });
               
         $(".toggle-password").click(function() {
           $(this).toggleClass("fa-eye fa-eye-slash");
@@ -93,6 +120,7 @@
             input.attr("type", "password");
           }
         });
+
         $(".toggle-con-password").click(function() {
             $(this).toggleClass("fa-eye fa-eye-slash");
             var input = $($(this).attr("toggle"));
@@ -146,6 +174,36 @@
                 signUp.disabled = true;
             }
         })
+
+        function Categorylink(div) {
+            div.closest('form').submit();
+          };
+        
+        window.addEventListener('load', (event) => {
+            // Find all elements with the class 'currency'
+            const currencyElements = document.querySelectorAll('.currency');
+        
+            currencyElements.forEach(element => {
+                // Get the text content of the element, remove any non-numeric characters except for the dot
+                let numberText = element.textContent.replace(/[^\d\.]/g, '');
+                // Convert the text to a number
+                let number = parseFloat(numberText);
+                // Format the number and update the element's text content
+                element.textContent = currency(number) + ' تومان';
+            });
+        });
+
+
+            {% comment %} const old = Number.prototype.toLocaleString;
+            Number.prototype.toLocaleString = function(locale)
+            {
+            let result = old.call(this, locale);
+            if(locale === 'fa-IR')
+            {
+                result = result.replace(/\٬/g, ",");
+            }
+            return result;
+            } {% endcomment %}
 
       </script>
 </html>

@@ -63,6 +63,8 @@ def edit_item(request, pk):
     # with open("log.txt", 'a') as f :
     #     f.write(request.method)
     #     f.close()
+    #TODO  تیک فروخته شد بزرگ ترش کنم
+    #TODO تایتل های فرم های ورودی فارسی کنم
     if request.method == 'POST':
         form = EditItemForm(request.POST, request.FILES, instance=item)
 
@@ -96,4 +98,4 @@ def sold_out(request, pk):
     item.is_sold = not(item.is_sold)
     item.save()
 
-    return redirect('dashboard:index')
+    return redirect('item:detail', pk=item.id)

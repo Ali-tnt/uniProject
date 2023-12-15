@@ -20,6 +20,13 @@
                              <p>{{ conversation.item.name }}</p>            
                         {% endif %}
                     {% endfor %}
+
+                        TODO اگر مکالمه ای نبود یه خبر بده
+                    {% comment %} {% if member in conversation.members.all %}
+                    <!-- Content to display if the member is in the conversation -->
+                    {% else %}
+                        <center><p> هنوز پیامی نیست</p></center>
+                    {% endif %} {% endcomment %}
                 
                     <h2 class="text-2xl "> {{item.name}} <h2> 
                    

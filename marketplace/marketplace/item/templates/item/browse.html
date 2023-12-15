@@ -16,7 +16,7 @@
 
             <ul>
                 {% for category in categories %}
-                    <li class="py-2 px-2 rounded-xl {% if category.id == category_id %}bg-gray-300{% endif %}">
+                    <li class="py-2 px-2 rounded-xl {% if category.id == category_id %}bg-lime-200 outline outline-lime-500{% endif %}">
                         {% comment %} <a href="{% url 'item:browse'%}?query={{ query }}&category={{ category.id }}">{{ category.name }}</a> {% endcomment %}
                         <form method="POST" action="{% url 'item:browse'%}" class="flex items-center">
                             {% csrf_token %}
@@ -53,7 +53,7 @@
 
                             <div class="p-6 bg-white rounded-b-xl">
                                 <h2 class="text-2xl "> {{item.name}} <h2> 
-                                <p class="text-gray-500 "> قیمت: {{item.price}} تومان</p>               
+                                <p class="text-gray-500 "> قیمت: <b class="currency">{{ item.price }}</b> تومان</p>               
                             </div>
                         </a>
                     </div>
