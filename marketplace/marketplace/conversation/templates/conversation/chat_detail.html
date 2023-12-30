@@ -3,7 +3,6 @@
 {% block title %}مکالمه{% endblock %}
 
 {% block content %}
-<meta http-equiv="refresh" content="5" >
 <center><h1 class="mb-6 mx-0 text-4xl font-bold ">مکالمه</h1></center>
 
 <div class="grid grid-cols-3 bg-slate-50 rounded-xl">
@@ -18,7 +17,7 @@
     </div>
     <div class="col-span-2 mt-5 mx-2">
         <div id="chat" class="space-y-6" style="height:400px;overflow-y:auto;flex-direction: column-reverse;"> 
-            TODO پیاما اسکرول شن پایین
+            {% comment %} # TODO پیاما اسکرول شن پایین {% endcomment %}
             {% for message in conversation.messages.all %}
                 <div class="p-6 flex {% if message.created_by == request.user %}bg-blue-100{% else %}bg-gray-200{% endif %} rounded-xl">
                     <div  >
@@ -37,27 +36,6 @@
         var chatBox = document.getElementById('chat');
         chatBox.scrollTop = chatBox.scrollHeight;
     }
-
-    // This function will make an AJAX call to fetch new messages periodically,
-    // it can be called on an interval or after a certain event.
-    function updateChat() {
-        // Assuming you have an endpoint "/fetch-messages/" that returns new messages in HTML format
-        fetch('/fetch-messages/')
-            .then(response => response.text())
-            .then(html => {
-                var chatBox = document.getElementById('chat');
-                chatBox.innerHTML += html; // Append new messages
-                
-                // Scroll chat box to the bottom if the scrollbar is near the bottom
-                // This prevents scrolling to the bottom when the user is reading previous messages.
-                if (chatBox.scrollHeight - chatBox.scrollTop < 500) {
-                    chatBox.scrollTop = chatBox.scrollHeight;
-                }
-            });
-    }
-
-    // You can call this function on an interval basis or after sending/receiving a message.
-    setInterval(updateChat, 5000); // Fetches new messages every 5 seconds.
 </script>
     
 {% endblock content %}

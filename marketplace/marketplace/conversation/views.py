@@ -10,7 +10,7 @@ def new_conversation(request, item_pk):
     if item.created_by == request.user:
         return redirect('dashboard:index')
  
-    conversations = Conversation.objects.filter(item=item).filter(members__in=[request.user.id])
+    conversations = Conversation.objects.filter(item__is_deleted=False,item=item).filter(members__in=[request.user.id])
 
     if conversations: # if there was already a conversation between user and product owner
         return redirect('conversation:detail', pk=conversations.first().id)
@@ -38,7 +38,7 @@ def new_conversation(request, item_pk):
 
 @login_required
 def inbox(request):
-    conversations = Conversation.objects.filter(members__in=[request.user.id])
+    conversations = Conversation.objects.filter(members__in=[request.user.id],item__is_deleted=False).distinct()
 
     return render(request, 'conversation/inbox.html',{
         'conversations' : conversations
