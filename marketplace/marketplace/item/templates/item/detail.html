@@ -36,7 +36,9 @@
                 {% endif %} 
             </div>
         {% else %}
-            <a href="{% url 'conversation:new' item.id %}" class="inline-block mt-6 px-6 py-3 text-lg font-semibold bg-cyan-500 text-white rounded-2xl hover:bg-cyan-700 ">تماس با فروشنده</a>
+            {% if not item.is_sold %}
+                <a href="{% url 'conversation:new' item.id %}" class="inline-block mt-6 px-6 py-3 text-lg font-semibold bg-cyan-500 text-white rounded-2xl hover:bg-cyan-700 ">تماس با فروشنده</a>
+            {% endif %}
         {% endif %}
     </div>
     <div class="col-span-3 justify-start " style="margin-right: auto;margin-left: 0;margin-right: 25%; width:50%;height:330">

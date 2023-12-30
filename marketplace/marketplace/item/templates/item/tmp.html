@@ -4,24 +4,30 @@
 
 {% block content %}
     <div class="pb-6 grid grid-cols-6 gap-4 bg-gray-100 rounded-xl">
-        <div class="col-span-1 mr-2 ">
+        <div class="col-span-1">
             <form method="POST" action="{% url 'item:browse'%}">
                 {% csrf_token %}
-                <input name="query" placeholder="دوچرخه، عروسک، ویلا و ..." class="mt-2 w-full py-4 px-6 border rounded-xl" type="text" value="{{query}}">
+                <input name="query" placeholder="دوچرخه، عروسک، ویلا و ..." class="w-full py-4 px-6 border rounded-xl" type="text" value="{{query}}">
                 <button class="mt-2 py-2 px-8 text-lg bg-lime-500 text-white rounded-xl">جستجو</button>
+                <!-- Check if a category is selected and display it -->
+                {% if category.id == category_id %}
+                    <p class="text-xs mt-2 text-right">
+                        {{ category_id }}
+                    </p>
+                {% endif %}
             </form>
 
             <hr class="my-6">
-            <p class="font-semibold ">دسته بندی ها</p>
+            <p class="font-semibold">دسته بندی ها</p>
 
             <ul>
                 {% for category in categories %}
-                    <li class="py-2 px-2 rounded-xl {% if category.id == category_id %}bg-lime-200 outline outline-lime-500{% endif %}">
+                    <li class="py-2 px-2 rounded-xl {% if category.id == category_id %}bg-gray-300{% endif %}">
                         {% comment %} <a href="{% url 'item:browse'%}?query={{ query }}&category={{ category.id }}">{{ category.name }}</a> {% endcomment %}
                         <form method="POST" action="{% url 'item:browse'%}" class="flex items-center">
                             {% csrf_token %}
-                            <input type="hidden" name="query" value="{{ query }}">
-                            <input type="hidden" name="category" value="{{ category.id }}">
+                            {% comment %} <input type="hidden" name="query" value="{{ query }}">
+                            <input type="hidden" name="category" value="{{ category.id }}"> {% endcomment %}
                             <button type="submit" class="bg-transparent text-right p-0 w-full">{{ category.name }}</button>
                         </form>
 
@@ -30,13 +36,13 @@
             </ul>
 
             <hr class="my-6">
-            <p class="font-semibold ">پاکسازی دسته بندی ها</p>
+            <p class="font-semibold">پاکسازی دسته بندی ها</p>
             <ul>
                 {% comment %} <li><a href="{% url 'item:browse'%}" style="font-size: 14px;" class="mt-2 py-1 px-2 inline-block bg-red-300 text-lg rounded-xl text-white">پاکسازی</a></li> {% endcomment %}
                 <li>
                     <form method="POST" action="{% url 'item:browse'%}">
                         {% csrf_token %}
-                        <button type="submit" style="font-size: 14px;" class="mt-2 mr-2  py-1 px-2 inline-block bg-red-300 text-lg rounded-xl text-white">پاکسازی</button>
+                        <button type="submit" style="font-size: 14px;" class="mt-2 py-1 px-2 inline-block bg-red-300 text-lg rounded-xl text-white">پاکسازی</button>
                     </form>
                 </li>
             </ul>
@@ -53,7 +59,7 @@
 
                             <div class="p-6 bg-white rounded-b-xl">
                                 <h2 class="text-2xl "> {{item.name}} <h2> 
-                                <p class="text-gray-500 "> قیمت: <b class="currency">{{ item.price }}</b> تومان</p>               
+                                <p class="text-gray-500 "> قیمت: {{item.price}} تومان</p>               
                             </div>
                         </a>
                     </div>

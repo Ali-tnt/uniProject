@@ -4,7 +4,7 @@ from item.models import Item
 
 @login_required
 def index(request):
-    items = Item.objects.filter(created_by=request.user)
+    items = Item.objects.filter(created_by=request.user,is_deleted=False).order_by('-created_at')   
 
     return render(request, 'dashboard/index.html',{
         'items': items,

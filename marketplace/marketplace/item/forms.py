@@ -2,7 +2,7 @@ from django import forms
 
 from .models import Item
 
-INPUT_CLASSES = 'w-full py-4 px-6 rounded-xl border'
+INPUT_CLASSES = 'w-full py-4 px-6 rounded-xl border my-2'
 
 class NewItemForm(forms.ModelForm):
     class Meta:
@@ -10,6 +10,7 @@ class NewItemForm(forms.ModelForm):
         fields = ('category', 'name', 'description', 'price', 'image',)
         widgets = {
             'category': forms.Select(attrs={
+                
                 'class': INPUT_CLASSES
             }),
             'name': forms.TextInput(attrs={
@@ -45,6 +46,9 @@ class EditItemForm(forms.ModelForm):
             }),
             'image': forms.FileInput(attrs={
                 'class': INPUT_CLASSES
+            }),
+            'is_sold': forms.CheckboxInput(attrs={
+                'class': "checked:bg-blue-500 w-6 h-6 text-blue-600 border-gray-300 rounded focus:ring-transparent" 
             })
         }
         

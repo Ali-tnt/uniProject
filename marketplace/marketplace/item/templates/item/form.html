@@ -11,7 +11,27 @@
     {% csrf_token %}
 
     <div class="space-y-4">
-        {{form.as_p}}
+        {% for field in form %}
+            <!-- Custom rendering for is_sold field -->
+            {% if field.name == 'is_sold' %}
+                <div class="py-4 px-6 rounded-xl border w-full">
+                    <label for="{{ field.id_for_label }}" class="flex items-center">
+                        <span class="m-2">{{ field.label }}</span>
+                        {{ field }} <!-- This is where the checkbox input will be rendered -->
+                    </label>
+                    {{ field.errors }} <!-- Render any errors here -->
+                </div>
+            {% else %}
+                <!-- Default rendering for all other fields -->
+                <div>
+                    {{ field.label_tag }}
+                    {{ field }}
+                    {{ field.help_text }}
+                    {{ field.errors }}
+                </div>
+            {% endif %}
+        {% endfor %}
+        {% comment %} {{form.as_p}} {% endcomment %}
     <div>
 
     {% if form.non_field_errors or form.errors %}

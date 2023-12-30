@@ -12,7 +12,7 @@ def browse(request):
     query = request.POST.get('query','')
     category_id = request.POST.get('category', 0 )
     categories = Category.objects.all()
-    browse = Item.objects.filter(is_sold=False)
+    browse = Item.objects.filter(is_sold=False,is_deleted=False).order_by('-created_at') 
 
     if category_id:
         browse = browse.filter(category_id=category_id)
@@ -31,7 +31,7 @@ def browse(request):
 # Create your views here.
 def detail(request, pk):
     item = get_object_or_404(Item, pk=pk)
-    related_items = Item.objects.filter(category=item.category, is_sold=False).exclude(pk=pk)[0:3]
+    related_items = Item.objects.filter(category=item.category, is_sold=False, is_deleted=False).exclude(pk=pk)[0:3] 
     
     return render(request, 'item/detail.html', {
         'item': item, 
@@ -60,11 +60,7 @@ def new_item(request):
 @login_required
 def edit_item(request, pk):
     item = get_object_or_404(Item, pk=pk, created_by=request.user)
-    # with open("log.txt", 'a') as f :
-    #     f.write(request.method)
-    #     f.close()
-    #TODO  تیک فروخته شد بزرگ ترش کنم
-    #TODO تایتل های فرم های ورودی فارسی کنم
+
     if request.method == 'POST':
         form = EditItemForm(request.POST, request.FILES, instance=item)
 
@@ -75,9 +71,7 @@ def edit_item(request, pk):
             # return HttpResponse({form.save(commit=True)})
     else:
         form = EditItemForm(instance=item)
-        # return HttpResponse({form.is_valid()})
-        # response.write("<p>{{form.is_valid()}}</p>")
-  
+
 
     return render(request, 'item/form.html',{
         'form' : form ,
@@ -88,7 +82,9 @@ def edit_item(request, pk):
 @login_required
 def delete(request, pk):
     item = get_object_or_404(Item,pk=pk, created_by=request.user)
-    item.delete()
+    item.is_deleted = True
+    item.save()
+    # item.delete()
 
     return redirect('dashboard:index')
 
