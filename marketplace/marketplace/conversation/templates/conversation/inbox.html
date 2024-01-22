@@ -16,7 +16,7 @@
                 <div> {% comment %}class="p-6 bg-white rounded-b-xl"{% endcomment %}
                     {% for member in conversation.members.all %}
                         {% if member != request.user %}
-                             <p class="text-gray-500 mb-4"><strong>{{ member.username }}</strong> | {{ conversation.modified_at }}</p>   
+                             <p class="text-gray-500 mb-4">{{ conversation.modified_at|date:'G:i (Y/n/j)' }} | <strong> فرستنده: {{ member.username }}</strong></p>   
                              <p>{{ conversation.item.name }}</p>            
                         {% endif %}
                     {% endfor %}
