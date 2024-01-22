@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
+from django_jalali.db import models as jmodels
 
 # Create your models here.
 
@@ -20,11 +21,9 @@ class Item(models.Model):
     is_sold = models.BooleanField(default=False,verbose_name='آیا محصول فروخته شده است؟')
     is_deleted = models.BooleanField(default=False)
     created_by = models.ForeignKey(User, related_name='items', on_delete=models.CASCADE)
-    created_at = models.DateTimeField(auto_now_add=True) #TODO تاریخ فارسی؟
-    
+    created_at = jmodels.jDateTimeField(auto_now_add=True) 
+    is_approved = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name
     
-    # TODO حذف هارو منطقی کنم، یه فیلد ایز دیلیتد اضافه کنم
-    # TODO برای چت ها هم همینکارو کنمکه با حذف محصول ایز دلیتد بشه

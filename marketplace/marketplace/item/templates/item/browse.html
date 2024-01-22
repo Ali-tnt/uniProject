@@ -20,7 +20,7 @@
                         {% comment %} <a href="{% url 'item:browse'%}?query={{ query }}&category={{ category.id }}">{{ category.name }}</a> {% endcomment %}
                         <form method="POST" action="{% url 'item:browse'%}" class="flex items-center">
                             {% csrf_token %}
-                            <input type="hidden" name="query" value="{{ query }}">
+                    
                             <input type="hidden" name="category" value="{{ category.id }}">
                             <button type="submit" class="bg-transparent text-right p-0 w-full">{{ category.name }}</button>
                         </form>

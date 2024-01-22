@@ -4,8 +4,11 @@
  {% block content %}
 
   <div class="mt-6 px-6 py-12 bg-gray-100 rounded-xl ">   
-    <div class="grid grid-cols-3 gap-4 bg-white rounded-xl py-10 px-5 m-2 text-center ">
+    <div class="grid {% if user.is_superuser %}grid-cols-4{% else %}grid-cols-3{% endif %} gap-4 bg-white rounded-xl py-10 px-5 m-2 text-center ">
       <a href="{% url 'item:new_item'%}" class="{{var_class}}bg-lime-600 hover:bg-lime-300">محصول جدید</a>
+      {% if user.is_superuser %}
+        <a href="{% url 'dashboard:admin_dash'%}" class="{{var_class}}bg-lime-600 hover:bg-lime-300">داشبورد ادمین</a>
+      {% endif %}
       <a href="{% url 'conversation:inbox' %}" class="{{var_class}}bg-lime-600 hover:bg-lime-300">پیام ها</a>
       <a href="{% url 'core:logout' %}" class="{{var_class}}bg-red-600 hover:bg-stone-400 text-sm" onclick="return confirmLogout()">خروج از حساب کاربری</a>
     </div>
@@ -26,8 +29,8 @@
               </div>
             </a>
             <div class="grid grid-cols-3 gap-3 bg-white rounded-xl p-4 m-2 text-center">
-              <a href="{% url 'item:edit' item.id %}" class=" inline-block py-3 bg-lime-600 text-white rounded-xl">ویرایش</a>
-              <a href="{% url 'item:delete' item.id %}" class="inline-block py-3 bg-red-500 text-white rounded-xl" onclick="return confirmDelete()">حذف محصول</a>
+              <a href="{% url 'item:edit' item.id %}" class=" inline-block py-3 bg-lime-600 text-white rounded-xl">ویرایش</a> {#TODO ویو ویرایش و حذف اشو درست کنم#}
+              <a href="{% url 'item:delete' item.id %}" class="inline-block py-3 bg-red-500 text-white rounded-xl" onclick="return confirmDelete()">حذف محصول</a>{#TODO ویو ویرایش و حذف اشو درست کنم#}
               {% if not item.is_sold %}
               <a href="{% url 'item:sold' item.id %}" class="inline-block py-3 bg-yellow-500 text-white rounded-xl" onclick="return">فروخته شد</a>
               {% else %}

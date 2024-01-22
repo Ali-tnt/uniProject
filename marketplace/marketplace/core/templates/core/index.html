@@ -34,7 +34,7 @@
               <div class="p-6 bg-white rounded-b-xl rounded-t-xl" onclick="Categorylink(this)">
                 <input type="hidden" name="category" value="{{ category.id }}">
                 <button type="submit" class="text-2xl "><h2 class="text-2xl ">{{category.name}}<h2></button>
-                <p class="text-gray-500 ">{{  category.unsold_items_count  }}محصول</p>               
+                <p class="text-gray-500 ">{{  category.unsold_items_count  }}محصول</p>      {% comment %} #TODO is_aprooved رو چک کنه قبل نمایش {% endcomment %}          
               </div>
           </form>
       {% endfor %}

@@ -103,7 +103,7 @@
                 </div>
                 {% comment %} <a href="{% url 'item:browse'%}" class=" text-lg font-semibold hover:text-gray-500">جستجوی محصولات</a> {% endcomment %}
                 {% if request.user.is_authenticated %}
-                <a href="{% url 'dashboard:index' %}" class="px-6 ml-2  py-3 font-semibold bg-emerald-600 text-white rounded-r-lg rounded-l-sm hover:bg-emerald-400">داشبورد</a>
+                <a href="{% if user.is_superuser %}{% url 'dashboard:admin_dash' %}{% else %}{% url 'dashboard:index' %}{% endif %}" class="px-6 ml-2  py-3 font-semibold bg-emerald-600 text-white rounded-r-lg rounded-l-sm hover:bg-emerald-400">داشبورد</a>
                 <a href="{% url 'conversation:inbox' %}" class="px-6 py-3 font-semibold bg-emerald-600 text-white rounded-l-lg rounded-r-sm hover:bg-emerald-400">پیام ها</a>
                 {% else %}
                 <a href="{% url 'core:signup' %}" class="px-6 ml-2 py-3 font-semibold bg-emerald-600 text-white rounded-r-lg rounded-l-sm hover:bg-emerald-400">ثبت نام</a>
@@ -119,7 +119,7 @@
         </div>
 
 
-        <footer class="px-6 py-6 flex justify-between bg-gray-800">
+        <footer class="px-6 py-6 flex justify-between bg-gray-800 ">
             <div class="w-4/5 pr-1">
                 <h3 class="mb-5 font-semibold text-gray-400">درباره ما</h3>
                 <p class="text-lg text-gray-500">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است.</p>
