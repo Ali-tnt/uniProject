@@ -1,0 +1,69 @@
+{% extends 'core/base.html' %} 
+{% block title %} داشبورد {% endblock %}
+
+ {% block content %}
+
+  <div class="mt-6 px-6 py-12 bg-gray-100 rounded-xl ">   
+    <div class="grid grid-cols-4 gap-4 bg-white rounded-xl py-10 px-5 m-2 text-center ">
+      <a href="{% url 'item:new_item'%}" class="{{var_class}}bg-lime-600 hover:bg-lime-300">محصول جدید</a>
+      <a href="{% url 'dashboard:index'%}" class="{{var_class}}bg-lime-600 hover:bg-lime-300">محصولات من</a>
+      <a href="{% url 'conversation:inbox' %}" class="{{var_class}}bg-lime-600 hover:bg-lime-300">پیام ها</a>
+      <a href="{% url 'core:logout' %}" class="{{var_class}}bg-red-600 hover:bg-stone-400 text-sm" onclick="return confirmLogout()">خروج از حساب کاربری</a>
+      
+    </div>
+    <div >
+        <div class="grid grid-cols-6 gap-4">
+            <div class="col-span-4 ">
+                <br><h2 class="mb-12 text-2xl text-center">محصولات نیاز به تایید</h2>
+                
+                <div {% if waitlist %}style="height:1000px;overflow-y:auto;flex-direction: column-reverse;"{% endif %} class="{% if waitlist %}grid grid-cols-3{% endif %} gap-4 bg-lime-300 p-4 rounded-xl">
+                    {% if waitlist %}
+                        {% for item in waitlist %}
+                        <div class="drop-shadow-md">
+                            <a href ="{% url 'item:detail' item.id %}"> 
+                                <div >
+                                    <img style="height:100%; width:100%; aspect-ratio: 1/1;" src="{{ item.image.url}}" class="rounded-t-xl">
+                                </div>
+                                <div class="px-6 py-3
+                                bg-white rounded-b-xl">
+                                    <h2 class="text-2xl "> {{item.name}} <h2> 
+                                    <p class="text-gray-500"><strong>فروشنده: </strong>{{ item.created_by.username }}</p>
+                                    <p class="text-gray-500 "> قیمت: {{item.price}} تومان</p>               
+                                </div>
+                            </a>
+                                {#TODO یه دکمه برای حذف یکی ویرایش و نمایش #}
+                            <div class="grid grid-cols-1 gap-3 {% if item.is_rejected %} bg-red-500 {% else %} bg-white {% endif %}rounded-xl p-4 m-2 text-center">
+                                <a href="{% url 'item:edit' item.id %}" class=" inline-block py-3 bg-yellow-400 hover:bg-orange-600 text-white rounded-xl shadow-inner">بررسی و ویرایش</a>
+                                {% comment %} <a href="{% url 'item:delete' item.id %}" class="inline-block py-3 bg-red-500 text-white rounded-xl" onclick="return confirmDelete()">حذف محصول</a>
+                                {% if not item.is_sold %}
+                                <a href="{% url 'item:sold' item.id %}" class="inline-block py-3 bg-yellow-500 text-white rounded-xl" onclick="return">فروخته شد</a>
+                                {% else %}
+                                <a href="{% url 'item:sold' item.id %}" class="inline-block py-3 bg-teal-500 text-white rounded-xl" onclick="return">برای فروش</a>
+                                {% endif %}  {% endcomment %}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="text-center font-bold m-32 p-12 bg-stone-100 rounded-xl">
+                            <h1>هورا!! محصولی برای تایید نمونده!</h1>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        
+            <div class="col-span-2 m-6">
+                <h2 class="mb-12 text-2xl text-center">نگاه کلی</h2>
+                <div class="bg-stone-100 p-32 text-right rounded-xl shadow-2xl text-center" style="aspect-ratio: 1/1;">
+                    <center>جزییات تعداد :</center></br>
+                    {% for label, value in stats %}
+                        <h1 class="flex justify-between">
+                            <span class="text-left">{{ label }}:</span>
+                            <span>{{ value }}</span>
+                        </h1>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content%}
