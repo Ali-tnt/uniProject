@@ -1,0 +1,40 @@
+{% extends 'core/base.html' %}
+
+{% block title %}صندوق پیام ها{% endblock %}
+
+{% block content %}
+<center><h1 class="mb-6 mx-0 text-4xl font-bold ">صندوق پیام ها</h1></center>
+
+<div class="space-y-6">
+    
+    <div class="space-y-6" style="height:490px;overflow-y:auto;flex-direction: column-reverse;"> 
+        {% if not conversations %}
+            <div class="text-center p-12 mt-32 mx-auto w-2/3 bg-gray-100 rounded-xl ">
+                <h1 class="font-bold text-lg">  پیامی نیست!</h1>
+            </div>
+        {% endif %}
+        {% for conversation in conversations %}
+        
+            <a href="{% url 'conversation:detail' conversation.id %}" class="block">
+                <div class="p-6 flex bg-gray-100 rounded-xl">
+                    <div class="pl-6">
+                        <img style="aspect-ratio: 1/1;" src="{{ conversation.item.image.url}}" class=" w-20 rounded-xl">
+                    </div>
+        
+                    <div> {% comment %}class="p-6 bg-white rounded-b-xl"{% endcomment %}
+                        {% for member in conversation.members.all %}
+                            {% if member != request.user %}
+                                <p class="text-gray-500 mb-4">{{ conversation.modified_at|date:'G:i (Y/n/j)' }} | <strong> فرستنده: {{ member.username }}</strong></p>   
+                                <p>{{ conversation.item.name }}</p>            
+                            {% endif %}
+                        {% endfor %}
+                        <p>
+                        <h2 class="text-2xl "> {{item.name}} <h2> 
+                    
+                    </div>
+                </div>
+            </a>     
+        {% endfor %}
+    </div>
+</div>
+{% endblock content %}

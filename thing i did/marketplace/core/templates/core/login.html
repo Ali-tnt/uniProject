@@ -1,0 +1,107 @@
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
+
+    <style>
+        html {
+            /* background: #e3e3ff; */
+        }
+        
+        .body-content {
+            padding-top: 10vh;
+        }
+        
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .form-item {
+            padding 10,0,0,0;
+            margin: 5px;
+            padding-bottom: 10px;
+            display: flex;
+        }
+        
+        .form {
+            margin: 0 5px;
+            padding-bottom: 10px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .form-item-password {
+            margin: 5px;
+            padding-bottom: 10px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .form-btns {
+            display: flex;
+            flex-direction: column;
+            margin: auto;
+            padding: 10px 0;
+        }
+        
+    </style>
+
+</head>
+{% extends "core/base.html" %}
+
+{% block title %}ورود{% endblock title %}
+
+{% block content %}
+<div class="md:w-2/3 lg:w-1/2 my-6 mx-auto p-6 bg-blue-100 rounded-xl">
+    <center><h1 class='mb-6 mx-0 text-4xl font-bold '>ورود</h1></center>
+    <form method="post" action="." >
+        {% csrf_token %}
+        <div class="form">
+            <label class="inline-block">نام کاربری: </label><br>
+            {{form.username }}
+        </div>
+        <div class="form-item-password">
+            <div>
+                <label class="inline-block mb-2">کلمه عبور: </label><br>
+                {{form.password}}<br>
+                <span toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password" 
+                style=" float: left; margin-left: +30px; margin-top: -35px; position: relative; z-index: 2;"></span>
+            </div>
+        </div>
+        {% comment %} <div class="remember-box">
+            <input type="checkbox" name="remember" id="remember">
+            <p>I accept the Terms of Use & Privacy Policy</p>
+        </div> {% endcomment %}
+        
+        {%if form.non_field_errors or form.errors%}
+            <div class="mb-3 p-6 bg-red-100 rounded-xl ">
+                {% for field in form %}
+                    {{field.errors}}
+                {% endfor %}
+                
+                {{ form.non_field_errors }}
+            </div>
+        {% endif %}
+        <div class="form-btns">
+            <br>
+            <button class="signup py-2 px-8 lg:px-56 text-lg bg-blue-500 hover:bg-blue-700 rounded-xl text-white" type="submit">ثبت</button>
+            <div class="options"><br>
+                <label class="inline-block mb-2">حساب کاربری ندارید؟<a href="{% url 'core:signup' %}"> از اینجا ثبت نام کنید.</a> </label>
+            </div>
+        </div>
+
+    </form>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+{% endblock content %}
+
+
+
+
+
+
+
+
