@@ -31,7 +31,7 @@
             <div class="grid grid-cols-3 gap-3 {% if not item.is_approved and not item.is_rejected %} bg-teal-800 {% elif item.is_rejected  %} bg-red-600 {%else%}bg-white{%endif%} rounded-xl p-4 my-2 mx-1 text-center">
             
               {% if item.is_approved %} {# and not item.is_rejected  #}
-                  <a href="{% url 'item:edit' item.id %}" class=" inline-block py-3 bg-lime-600 text-white rounded-xl">ویرایش</a> 
+                  <a href="{% url 'item:edit' item.id %}" class=" inline-block py-3 bg-lime-600 text-white rounded-xl" onclick="return confirmEdit()">ویرایش</a> 
                   <a href="{% url 'item:delete' item.id %}" class="inline-block py-3 bg-red-500 text-white rounded-xl" onclick="return confirmDelete()">حذف محصول</a>
                   {% if not item.is_sold %}
                   <a href="{% url 'item:sold' item.id %}" class="inline-block py-3 bg-yellow-500 text-white rounded-xl" onclick="return">فروخته شد</a>

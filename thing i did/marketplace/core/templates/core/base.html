@@ -10,6 +10,19 @@
         <title>{% block title %}{% endblock %} | MarketPlace</title> <!--<a href="{% url 'core:index' %}">-->
     </head>
     <style>
+        
+        .SelcetBar{
+            'border: 1px solid #ccc;
+            -webkit-border-radius: 5px;
+            -moz-border-radius: 5px;
+            border-radius: 10px !important;
+            padding: 2px 3px;
+            cursor: text;
+            height: 30px;
+            width: 100%;
+            cursor: pointer !important;'
+        }
+
         .slidecontainer {
             width: 100%;
         }
@@ -125,7 +138,7 @@
                 <div class="dropdown">
                     <a href="{% url 'item:browse' %}" class=" mx-2 px-4 py-3 font-semibold bg-lime-600 outline outline-lime-300 text-white rounded-lg hover:bg-lime-800">جستجوی محصولات</a>
                     <div class="dropdown-content rounded-xl">
-                        {% for category in categories %} 
+                    {% for category in nav_categories %} 
                         <form method="POST" action="{% url 'item:browse' %}" >
                             {% csrf_token %}
                               <div class="px-4" onclick="Categorylink(this)">
@@ -133,7 +146,7 @@
                                 <button type="submit" class="">{{category.name}}</button>            
                               </div>
                           </form>
-                      {% endfor %}
+                    {% endfor %}
 
                     </div>
                 </div>
@@ -243,6 +256,12 @@
             return true;
         });
 
+        function confirmEdit(itemId) {
+            {% if not user.is_superuser %}
+                return confirm('با ثبت ویرایش وضعیت محصول شما به درحال بررسی تغییر پیدا میکند.');
+            {% endif %}
+          }
+
         function confirmLogout(itemId) {
             return confirm('آیا قصد خروج از حساب کاربری خود را دارید؟');
             }
@@ -334,8 +353,6 @@
                 element.textContent = currency(number) + ' تومان';
             });
         });
-
-
             {% comment %} const old = Number.prototype.toLocaleString;
             Number.prototype.toLocaleString = function(locale)
             {

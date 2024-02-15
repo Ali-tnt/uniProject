@@ -24,7 +24,7 @@
                     <div> {% comment %}class="p-6 bg-white rounded-b-xl"{% endcomment %}
                         {% for member in conversation.members.all %}
                             {% if member != request.user %}
-                                <p class="text-gray-500 mb-4">{{ conversation.modified_at|date:'G:i (Y/n/j)' }} | <strong> فرستنده: {{ member.username }}</strong></p>   
+                                <p class="text-gray-500 mb-4">{{ conversation.modified_at|date:'G:i (Y/n/j)' }} | {% if conversation.item.created_by != request.user  %} <strong> فرستنده: {{ request.user }}{% else %}<strong> فرستنده: {{ member.username }}{% endif %}</strong></p>   
                                 <p>{{ conversation.item.name }}</p>            
                             {% endif %}
                         {% endfor %}

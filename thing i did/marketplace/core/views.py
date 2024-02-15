@@ -3,6 +3,7 @@ from item.models import Category, Item
 from .forms import SignupForm
 from django.db.models import Count, Q
 from django.contrib import messages
+from django.contrib.auth import logout
 
  #request parameter is for reciving information about browser, ip addres, being GET or POST request, etc...
 def index(request):
@@ -15,10 +16,6 @@ def index(request):
     if request.user.is_authenticated and not request.session.get('logged_in', False):
         messages.success(request, 'با موفقیت به حساب خود وارد شدید.')
         request.session['logged_in'] = True
-
-    #TODO درست کردن پیام لاگ اوت Check if the user has just logged out
-    # elif not request.user.is_authenticated and request.session.pop('logged_in', False):
-    #     messages.success(request, 'با موفقیت از حساب خود خارج شدید.')
 
     return render(request, 'core/index.html', {
         'categories': categories,
@@ -40,4 +37,7 @@ def signup(request):
         form = SignupForm()
     return render(request, 'core/signup.html', {'form': form} )
 
-# def logout(request):G
+def custom_logout(request):
+    logout(request)
+    messages.success(request, 'با موفقیت از حساب خود خارج شدید.')
+    return redirect('/login/') 
