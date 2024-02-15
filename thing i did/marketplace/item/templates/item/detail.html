@@ -44,7 +44,7 @@
                         {% endif %}
                 {% endif %} 
 
-                <a href="{% url 'item:edit' item.id %}" class="inline-block mt-6 px-6 py-3 text-lg font-semibold {% if item.is_approved %}bg-lime-600{% else %}bg-stone-600{% endif %} text-white rounded-xl">ویرایش</a>
+                <a href="{% url 'item:edit' item.id %}" class="inline-block mt-6 px-6 py-3 text-lg font-semibold {% if item.is_approved %}bg-lime-600{% else %}bg-stone-600{% endif %} text-white rounded-xl" onclick="return confirmEdit()">ویرایش</a>
                 <a href="{% url 'item:delete' item.id %}" class="inline-block mt-6 px-6 py-3 text-lg font-semibold {% if item.is_approved %}bg-red-600{% else %}bg-stone-600{% endif %} text-white rounded-xl" onclick="return confirmDelete()">بندازش دور</a>
                
                 {% if  item.is_approved %}

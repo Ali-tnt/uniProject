@@ -5,55 +5,63 @@ from .models import Category, Item
 from .forms import NewItemForm, EditItemForm, AdminEditItemForm
 from django.http import Http404
 
+# from django.contrib import messages
+
 # for search an item
   # items
-
-def browse(request): #TODO وقتی سرچ رو دسته بندی میره فیلتر قیمت پاک میشه درست کنم
-    #TODO با سرچ قیمت فیلتر دسته بندی پاک میشه درستش کنم
+def browse(request):
     categories = Category.objects.all()
-    browse = Item.objects.filter(is_sold=False,is_deleted=False,is_approved=True).order_by('-modified_at')
-    
-    custom_value = 5000
-    highest_item_price = Item.objects.filter(is_sold=False, is_deleted=False, is_approved=True).aggregate(Max('price'))['price__max'] or 0
-    highest_item_price += custom_value
+    browse_items = Item.objects.filter(is_sold=False, is_deleted=False, is_approved=True).order_by('-modified_at')
+    custom_value = 10000
+    highest_item_price = custom_value + Item.objects.filter(is_sold=False, is_deleted=False, is_approved=True).aggregate(Max('price'))['price__max'] or 0 
 
     if request.method == 'POST':
-        query = request.POST.get('query','')
-        category_id = request.POST.get('category', 0)
+        query = request.POST.get('query', '')
+        category_id = request.POST.get('category', 0) or 0
         min_price = request.POST.get('min_price')
         max_price = request.POST.get('max_price')
+        order = request.POST.get('order', 'newest')
+
+        if category_id:
+            browse_items = browse_items.filter(category_id=int(category_id))
+        else:
+            category_id = 0
+
+        if query:
+            browse_items = browse_items.filter(Q(name__icontains=query) | Q(description__icontains=query))
+
+        if min_price:
+            min_price = float(min_price)
+            browse_items = browse_items.filter(price__gte=min_price)
+        if max_price:
+            max_price = float(max_price)
+            browse_items = browse_items.filter(price__lte=max_price)
+
+        if order == 'newest':
+            browse_items = browse_items.order_by('-modified_at')
+        elif order == 'oldest':
+            browse_items = browse_items.order_by('modified_at')
+        elif order == 'high_to_low':
+            browse_items = browse_items.order_by('-price')
+        elif order == 'low_to_high':
+            browse_items = browse_items.order_by('price')
+
     else:
-        # If it's not a POST request, handle default values or values from session/cookies here
         query = ""
         category_id = 0
         min_price = 0
-        max_price =  highest_item_price
+        max_price = highest_item_price
+        order = 'newest'  # Default order
 
-    if category_id:
-        browse = browse.filter(category_id=category_id)
-
-    if query:
-        browse= browse.filter(Q(name__icontains=query) | Q(description__icontains=query))
-
-    if min_price:
-        min_price = int(min_price)
-    if max_price:
-        max_price = int(max_price)
-
-    if min_price is not None and min_price != '':
-        browse = browse.filter(price__gte=min_price)
-
-    if max_price is not None and max_price != '':
-        browse = browse.filter(price__lte=max_price)
-
-    return render(request, 'item/browse.html',{
-        'items' : browse,
+    return render(request, 'item/browse.html', {
+        'items': browse_items,  
         'query': query,
         'categories': categories,
         'category_id': int(category_id),
         'min_price': min_price,
         'max_price': max_price,
         'highest_item_price': highest_item_price,
+        'price_order': order  # Passing order for highlighting selected link
     })
 
 
@@ -95,7 +103,7 @@ def edit_item(request, pk):
     item = get_object_or_404(Item, pk=pk)
 
     if not (request.user == item.created_by or request.user.is_superuser):
-        return render(request, '403.html', status=403)
+        return render(request, 'core/403.html', status=403)
 
     if request.method == 'POST':
         if request.user.is_superuser:

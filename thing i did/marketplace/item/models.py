@@ -28,4 +28,3 @@ class Item(models.Model):
     modified_at = jmodels.jDateTimeField(auto_now=True)
     def __str__(self):
         return self.name
-    
