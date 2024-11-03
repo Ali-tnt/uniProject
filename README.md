@@ -1,4 +1,3 @@
 # uniProject
-Simple Django website for marketplace use case.
-idk what am i doing...
-so don't laugh at me :))
+Simple Django website for Marketplace Use case.
+Check https://github.com/Ali-tnt/uniProject/tree/ruinedMain/thing%20i%20did
